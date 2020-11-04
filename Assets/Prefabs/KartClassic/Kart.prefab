@@ -444,7 +444,7 @@ Transform:
   - {fileID: 2088445357104706236}
   - {fileID: 2088445357858942230}
   m_Father: {fileID: 2088445357892864862}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2088445357800075712
 GameObject:
@@ -474,7 +474,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2088445357892864862}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2088445357858942233
 GameObject:
@@ -516,13 +516,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2088445357892864862}
+  - component: {fileID: 2155953203241519584}
   - component: {fileID: 2088445357892864834}
   - component: {fileID: 2088445357892864837}
-  - component: {fileID: 3053675603637560830}
   - component: {fileID: 3203952811914738710}
-  - component: {fileID: 3053675603198271920}
   - component: {fileID: 3053675604459100955}
-  - component: {fileID: 2155953203241519584}
   m_Layer: 2
   m_Name: Kart
   m_TagString: Player
@@ -541,6 +539,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 969334005629908962}
   - {fileID: 2088445357780517208}
   - {fileID: 2088445357800075713}
   - {fileID: 2088445358072178040}
@@ -548,6 +547,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2155953203241519584
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088445357892864836}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.39, z: 1.81}
+  m_Center: {x: 0, y: 0.16, z: -0.07}
 --- !u!54 &2088445357892864834
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -576,18 +588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2e8893a3093437d9d101b53db56941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStats:
-    TopSpeed: 10
-    Acceleration: 15
-    ReverseSpeed: 5
-    ReverseAcceleration: 5
-    AccelerationCurve: 0.8
-    Braking: 10
-    CoastingDrag: 4
-    Grip: 0.95
-    Steer: 5
-    AddedGravity: 0
-    Suspension: 0
   _centerOfMass: {fileID: 2088445357800075713}
   _wheels:
   - {fileID: 2088445358072178036}
@@ -595,27 +595,8 @@ MonoBehaviour:
   - {fileID: 2088445358072178032}
   - {fileID: 2088445358072178030}
   _suspensionBody: {fileID: 888399676680090280}
-  GroundLayers:
-    serializedVersion: 2
-    m_Bits: 3601
-  RaycastDist: 0.3
-  MinHeightThreshold: -9.42
---- !u!114 &3053675603637560830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088445357892864836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d57f9e76271f37844a1565e16659bd77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerAnimator: {fileID: 3053675602932305777}
-  _kartMovement: {fileID: 2088445357892864837}
-  SteeringParam: Steering
-  GroundedParam: Grounded
+  _rb: {fileID: 2088445357892864834}
+  _suspensionAnimator: {fileID: 8330656577432056399}
 --- !u!114 &3203952811914738710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,39 +611,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Horizontal: Horizontal
   Vertical: Vertical
---- !u!114 &3053675603198271920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088445357892864836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28e237446f589d9458c806d922e78789, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _kartMovementController: {fileID: 2088445357892864837}
-  steeringAnimationDamping: 10
-  frontWheelRadius: 0.5
-  rearWheelRadius: 0.5
-  maxSteeringAngle: 30
-  frontLeftWheel:
-    wheelTransform: {fileID: 2088445358072178036}
-    axelAxis: {x: 0, y: 0, z: 0}
-    steeringAxis: {x: 0, y: 1, z: 0}
-  frontRightWheel:
-    wheelTransform: {fileID: 2088445358072178034}
-    axelAxis: {x: 0, y: 0, z: 0}
-    steeringAxis: {x: 0, y: 1, z: 0}
-  rearLeftWheel:
-    wheelTransform: {fileID: 2088445358072178032}
-    axelAxis: {x: 1, y: 0, z: 0}
-    steeringAxis: {x: 0, y: 0, z: 0}
-  rearRightWheel:
-    wheelTransform: {fileID: 2088445358072178030}
-    axelAxis: {x: 1, y: 0, z: 0}
-    steeringAxis: {x: 0, y: 0, z: 0}
 --- !u!114 &3053675604459100955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,20 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8534e17a0f90604c9afd4f5c73d829f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Id: f7e825b2-e212-4f9b-9d52-9f509e38945b
---- !u!65 &2155953203241519584
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088445357892864836}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.39, z: 1.81}
-  m_Center: {x: 0, y: 0.16, z: -0.07}
+  m_Id: 6623f826-4695-45db-8a89-21dbe20be23d
 --- !u!1 &3657308167776221304
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,8 +654,100 @@ Transform:
   - {fileID: 2088445357022328239}
   - {fileID: 2088445356246006163}
   m_Father: {fileID: 2088445357892864862}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7020032907460622534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 969334005629908962}
+  - component: {fileID: 9104798801627670068}
+  - component: {fileID: 5835508454974717295}
+  - component: {fileID: 8330656577432056399}
+  m_Layer: 2
+  m_Name: AnimationComponents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &969334005629908962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020032907460622534}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2088445357892864862}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9104798801627670068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020032907460622534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57f9e76271f37844a1565e16659bd77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerAnimator: {fileID: 3053675602932305777}
+  _kartMovement: {fileID: 2088445357892864837}
+--- !u!114 &5835508454974717295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020032907460622534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e237446f589d9458c806d922e78789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _kartMovementController: {fileID: 2088445357892864837}
+  steeringAnimationDamping: 10
+  frontWheelRadius: 0.5
+  rearWheelRadius: 0.5
+  maxSteeringAngle: 30
+  frontLeftWheel:
+    wheelTransform: {fileID: 2088445358072178036}
+    axelAxis: {x: 0, y: 0, z: 0}
+    steeringAxis: {x: 0, y: 1, z: 0}
+  frontRightWheel:
+    wheelTransform: {fileID: 2088445358072178034}
+    axelAxis: {x: 0, y: 0, z: 0}
+    steeringAxis: {x: 0, y: 1, z: 0}
+  rearLeftWheel:
+    wheelTransform: {fileID: 2088445358072178032}
+    axelAxis: {x: 1, y: 0, z: 0}
+    steeringAxis: {x: 0, y: 0, z: 0}
+  rearRightWheel:
+    wheelTransform: {fileID: 2088445358072178030}
+    axelAxis: {x: 1, y: 0, z: 0}
+    steeringAxis: {x: 0, y: 0, z: 0}
+--- !u!114 &8330656577432056399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020032907460622534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b616451fc542493084079d269eaddb7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2088445356246131539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1202,7 +1229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 305a556307b36464395aa157cffcd3db, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: 305a556307b36464395aa157cffcd3db, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -11,12 +11,12 @@ namespace KartGame.KartSystems
         [SerializeField] private Transform[] _wheels;
         [SerializeField] private Transform _suspensionBody;
         [SerializeField] private Rigidbody _rb;
+        [SerializeField] private SuspensionAnimator _suspensionAnimator;
 
         private KartStats _baseStats = KartStats.GetDefaults();
         private Vector2 _inputVector;
         private bool _canMove = true;
         private IInput _input;
-        private SuspensionAnimator _suspensionAnimator;
         private Vector3 _suspensionNeutralPos;
         private float _airPercent => 1f - GroundPercent;
 
@@ -24,7 +24,6 @@ namespace KartGame.KartSystems
         {
             _rb = GetComponent<Rigidbody>();
             _input = GetComponent<IInput>();
-            _suspensionAnimator = GetComponent<SuspensionAnimator>();
             var bodyTransform = _suspensionBody.transform;
             _suspensionNeutralPos = bodyTransform.localPosition;
         }

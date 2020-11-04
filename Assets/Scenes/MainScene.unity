@@ -7693,12 +7693,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 801682767}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &844028429 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 3053675602932305777, guid: e2308d26eb088b14cae968250e87af84,
-    type: 3}
-  m_PrefabInstance: {fileID: 3053675602700686716}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &849316179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18719,11 +18713,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kart
       objectReference: {fileID: 0}
-    - target: {fileID: 2088445357892864837, guid: e2308d26eb088b14cae968250e87af84,
-        type: 3}
-      propertyPath: MinHeightThreshold
-      value: 0.02
-      objectReference: {fileID: 0}
     - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18779,11 +18768,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3053675603637560830, guid: e2308d26eb088b14cae968250e87af84,
+    - target: {fileID: 2155953203241519584, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
-      propertyPath: _playerAnimator
+      propertyPath: m_Material
       value: 
-      objectReference: {fileID: 844028429}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2308d26eb088b14cae968250e87af84, type: 3}
 --- !u!4 &3934862072311242274 stripped
@@ -18792,21 +18781,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3053675602700686716}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3934862072311242296 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2088445357892864836, guid: e2308d26eb088b14cae968250e87af84,
-    type: 3}
-  m_PrefabInstance: {fileID: 3053675602700686716}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3934862072311242297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3934862072311242296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b616451fc542493084079d269eaddb7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
