@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace KartGame.KartSystems
 {
@@ -9,30 +7,24 @@ namespace KartGame.KartSystems
         public Vector2 InputVector => _inputVector;
         public float GroundPercent { get; private set; }
 
-        public KartStats baseStats = KartStats.GetDefaults();
-
         [SerializeField] private Transform _centerOfMass;
         [SerializeField] private Transform[] _wheels;
         [SerializeField] private Transform _suspensionBody;
         [SerializeField] private Rigidbody _rb;
 
-
-        public float RaycastDist = 0.3f;
-        public float MinHeightThreshold = 0.02f;
-
+        private KartStats _baseStats = KartStats.GetDefaults();
         private Vector2 _inputVector;
         private bool _canMove = true;
-        private KartStats _finalStats;
         private IInput _input;
+        private SuspensionAnimator _suspensionAnimator;
         private Vector3 _suspensionNeutralPos;
         private float _airPercent => 1f - GroundPercent;
-
-
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             _input = GetComponent<IInput>();
+            _suspensionAnimator = GetComponent<SuspensionAnimator>();
             var bodyTransform = _suspensionBody.transform;
             _suspensionNeutralPos = bodyTransform.localPosition;
         }
@@ -47,7 +39,10 @@ namespace KartGame.KartSystems
         private void FixedUpdate()
         {
             GatherInputs();
-            InitValues();
+
+            _baseStats.Grip = Mathf.Clamp(_baseStats.Grip, 0, 1);
+            _baseStats.Suspension = Mathf.Clamp(_baseStats.Suspension, 0, 1);
+            _rb.centerOfMass = _rb.transform.InverseTransformPoint(_centerOfMass.position);
 
             var groundedCount = CountGroundedWheels(out var minHeight);
             GroundPercent = (float) groundedCount / _wheels.Length;
@@ -58,41 +53,17 @@ namespace KartGame.KartSystems
             if (_canMove) MoveVehicle(accel, turn);
 
             GroundAirbourne();
-            AnimateSuspension();
+            _suspensionAnimator.AnimateSuspension(_suspensionNeutralPos, _baseStats, _suspensionBody);
         }
 
         private void GatherInputs()
         {
             _inputVector = Vector2.zero;
             var current = _input.GenerateInput();
-            if (current.sqrMagnitude > 0) 
+            if (current.sqrMagnitude > 0)
                 _inputVector = current;
         }
 
-        private void InitValues()
-        {
-            _finalStats = baseStats;
-            _finalStats.Grip = Mathf.Clamp(_finalStats.Grip, 0, 1);
-            _finalStats.Suspension = Mathf.Clamp(_finalStats.Suspension, 0, 1);
-            _rb.centerOfMass = _rb.transform.InverseTransformPoint(_centerOfMass.position);
-        }
-
-        private void AnimateSuspension()
-        {
-            var suspensionTargetPos = _suspensionNeutralPos;
-            var bodyRot = transform.rotation.eulerAngles;
-            var maxXTilt = _finalStats.Suspension * 45;
-            var closestNeutralRot = Mathf.Abs(360 - bodyRot.x) < Mathf.Abs(bodyRot.x) ? 360 : 0;
-            var xTilt = Mathf.DeltaAngle(closestNeutralRot, bodyRot.x);
-            var suspensionT = Mathf.InverseLerp(0, maxXTilt, xTilt);
-            suspensionT *= suspensionT;
-            bodyRot.x = Mathf.Lerp(closestNeutralRot, bodyRot.x, suspensionT);
-            var suspensionTargetRot = Quaternion.Inverse(_suspensionBody.transform.rotation) * Quaternion.Euler(bodyRot);
-            _suspensionBody.transform.localPosition = Vector3.Lerp(_suspensionBody.transform.localPosition,
-                suspensionTargetPos, Time.deltaTime * 5f);
-            _suspensionBody.transform.localRotation = Quaternion.Slerp(_suspensionBody.transform.localRotation,
-                suspensionTargetRot, Time.deltaTime * 5f);
-        }
 
         private int CountGroundedWheels(out float minHeight)
         {
@@ -102,10 +73,8 @@ namespace KartGame.KartSystems
             for (var i = 0; i < _wheels.Length; i++)
             {
                 var current = _wheels[i];
-                groundedCount += Physics.Raycast(current.position, Vector3.down, out var hit, RaycastDist)
-                    ? 1
-                    : 0;
-
+                var raycastHit = Physics.Raycast(current.position, Vector3.down, out var hit, _baseStats.RaycastDist);
+                groundedCount += raycastHit ? 1 : 0;
                 if (hit.distance > 0) minHeight = Mathf.Min(hit.distance, minHeight);
             }
 
@@ -114,18 +83,17 @@ namespace KartGame.KartSystems
 
         private void GroundVehicle(float minHeight)
         {
-            if (GroundPercent >= 1f)
-                if (minHeight < MinHeightThreshold)
-                {
-                    var diff = MinHeightThreshold - minHeight;
-                    transform.position += diff * transform.up;
-                }
+            if (GroundPercent < 1f || minHeight >= _baseStats.MinHeightThreshold) return;
+            
+            var diff = _baseStats.MinHeightThreshold - minHeight;
+            transform.position += diff * transform.up;
         }
 
         private void GroundAirbourne()
         {
-            // while in the air, fall faster
-            if (_airPercent >= 1) _rb.velocity += Physics.gravity * Time.deltaTime * _finalStats.AddedGravity;
+            if (_airPercent < 1f) return;
+            
+            _rb.velocity += Physics.gravity * (Time.deltaTime * _baseStats.AddedGravity);
         }
 
         private void MoveVehicle(float accelInput, float turnInput)
@@ -138,24 +106,24 @@ namespace KartGame.KartSystems
             var localVelDirectionIsFwd = localVel.z >= 0;
 
             // use the max speed for the direction we are going--forward or reverse.
-            var maxSpeed = accelDirectionIsFwd ? _finalStats.TopSpeed : _finalStats.ReverseSpeed;
-            var accelPower = accelDirectionIsFwd ? _finalStats.Acceleration : _finalStats.ReverseAcceleration;
+            var maxSpeed = accelDirectionIsFwd ? _baseStats.TopSpeed : _baseStats.ReverseSpeed;
+            var accelPower = accelDirectionIsFwd ? _baseStats.Acceleration : _baseStats.ReverseAcceleration;
 
             var accelRampT = _rb.velocity.magnitude / maxSpeed;
-            var multipliedAccelerationCurve = _finalStats.AccelerationCurve * accelerationCurveCoeff;
+            var multipliedAccelerationCurve = _baseStats.AccelerationCurve * accelerationCurveCoeff;
             var accelRamp = Mathf.Lerp(multipliedAccelerationCurve, 1, accelRampT * accelRampT);
 
             var isBraking = accelDirectionIsFwd != localVelDirectionIsFwd;
 
-            var finalAccelPower = isBraking ? _finalStats.Braking : accelPower;
+            var finalAccelPower = isBraking ? _baseStats.Braking : accelPower;
             var finalAcceleration = finalAccelPower * accelRamp;
-            var turningPower = turnInput * _finalStats.Steer;
+            var turningPower = turnInput * _baseStats.Steer;
             var turnAngle = Quaternion.AngleAxis(turningPower, _rb.transform.up);
             var fwd = turnAngle * _rb.transform.forward;
             var movement = fwd * accelInput * finalAcceleration * GroundPercent;
 
             // simple suspension allows us to thrust forward even when on bumpy terrain
-            fwd.y = Mathf.Lerp(fwd.y, 0, _finalStats.Suspension);
+            fwd.y = Mathf.Lerp(fwd.y, 0, _baseStats.Suspension);
 
             var currentSpeed = _rb.velocity.magnitude;
             var wasOverMaxSpeed = currentSpeed >= maxSpeed;
@@ -174,7 +142,7 @@ namespace KartGame.KartSystems
             {
                 var restVelocity = new Vector3(0, _rb.velocity.y, 0);
                 adjustedVelocity = Vector3.MoveTowards(adjustedVelocity, restVelocity,
-                    Time.deltaTime * _finalStats.CoastingDrag);
+                    Time.deltaTime * _baseStats.CoastingDrag);
             }
 
             _rb.velocity = adjustedVelocity;
@@ -183,39 +151,26 @@ namespace KartGame.KartSystems
 
             if (GroundPercent > 0)
             {
-                // manual angular velocity coefficient
                 var angularVelocitySteering = .4f;
                 var angularVelocitySmoothSpeed = 20f;
-
-                // turning is reversed if we're going in reverse and pressing reverse
                 if (!localVelDirectionIsFwd && !accelDirectionIsFwd) angularVelocitySteering *= -1;
                 var angularVel = _rb.angularVelocity;
-
-                // move the Y angular velocity towards our target
                 angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering,
                     Time.deltaTime * angularVelocitySmoothSpeed);
-
-                // apply the angular velocity
                 _rb.angularVelocity = angularVel;
-
-                // rotate rigidbody's velocity as well to generate immediate velocity redirection
-                // manual velocity steering coefficient
                 var velocitySteering = 25f;
-                // rotate our velocity based on current steer value
                 _rb.velocity = Quaternion.Euler(0f, turningPower * velocitySteering * Time.deltaTime, 0f) *
                                _rb.velocity;
             }
 
-            if (GroundPercent > 0f)
-            {
-                var gripCoeff = 30f;
-                var latFrictionDirection = Vector3.Cross(fwd, transform.up);
-                var latSpeed = Vector3.Dot(_rb.velocity, latFrictionDirection);
-                var latFrictionDampedVelocity = _rb.velocity -
-                                                latFrictionDirection * latSpeed * _finalStats.Grip * gripCoeff *
-                                                Time.deltaTime;
-                _rb.velocity = latFrictionDampedVelocity;
-            }
+            if (GroundPercent <= 0f) return;
+
+            var gripCoeff = 30f;
+            var latFrictionDirection = Vector3.Cross(fwd, transform.up);
+            var latSpeed = Vector3.Dot(_rb.velocity, latFrictionDirection);
+            var dampened = latFrictionDirection * (latSpeed * _baseStats.Grip * gripCoeff * Time.deltaTime);
+            var latFrictionDampedVelocity = _rb.velocity - dampened;
+            _rb.velocity = latFrictionDampedVelocity;
         }
 
         private void ApplyAngularSuspension()
@@ -230,8 +185,8 @@ namespace KartGame.KartSystems
             var sCoeff = 10f;
             Vector3 suspensionRotation;
             var minimumSuspension = 0.5f;
-            if (GroundPercent > 0.5f || _finalStats.Suspension < minimumSuspension)
-                suspensionRotation = sXZ * _finalStats.Suspension * sCoeff * Time.deltaTime;
+            if (GroundPercent > 0.5f || _baseStats.Suspension < minimumSuspension)
+                suspensionRotation = sXZ * _baseStats.Suspension * sCoeff * Time.deltaTime;
             else
                 suspensionRotation = sXZ * minimumSuspension * sCoeff * Time.deltaTime;
             var suspendedAngular = _rb.angularVelocity - suspensionRotation;
@@ -240,19 +195,13 @@ namespace KartGame.KartSystems
 
         public float LocalSpeed()
         {
-            if (_canMove)
-            {
-                var dot = Vector3.Dot(transform.forward, _rb.velocity);
-                if (Mathf.Abs(dot) > 0.1f)
-                {
-                    var speed = _rb.velocity.magnitude;
-                    return dot < 0 ? -(speed / _finalStats.ReverseSpeed) : speed / _finalStats.TopSpeed;
-                }
+            if (_canMove == false) return _inputVector.y;
 
-                return 0f;
-            }
+            var dot = Vector3.Dot(transform.forward, _rb.velocity);
+            if (Mathf.Abs(dot) <= 0.1f) return 0f;
 
-            return _inputVector.y;
+            var speed = _rb.velocity.magnitude;
+            return dot < 0 ? -(speed / _baseStats.ReverseSpeed) : speed / _baseStats.TopSpeed;
         }
     }
 }
