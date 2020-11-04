@@ -1,36 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace KartGame.KartSystems 
+namespace KartGame.KartSystems
 {
-
     public class KartPlayerAnimator : MonoBehaviour
     {
-        public Animator PlayerAnimator;
-        public KartMovement _kartMovement;
+        [SerializeField] private Animator _playerAnimator;
+        [SerializeField] private KartMovement _kartMovement;
 
-        public string SteeringParam = "Steering";
-        public string GroundedParam = "Grounded";
+        private readonly string _groundedParam = "Grounded";
+        private readonly string _steeringParam = "Steering";
+        private int _steerHash;
+        private int _groundHash;
+        private float _steeringSmoother;
 
-        int m_SteerHash, m_GroundHash;
-
-        float steeringSmoother;
-
-        void Awake()
+        private void Awake()
         {
             Assert.IsNotNull(_kartMovement, "No ArcadeKart found!");
-            Assert.IsNotNull(PlayerAnimator, "No PlayerAnimator found!");
-            m_SteerHash  = Animator.StringToHash(SteeringParam);
-            m_GroundHash = Animator.StringToHash(GroundedParam);
+            Assert.IsNotNull(_playerAnimator, "No PlayerAnimator found!");
+            _steerHash = Animator.StringToHash(_steeringParam);
+            _groundHash = Animator.StringToHash(_groundedParam);
         }
 
-        void Update()
+        private void Update()
         {
-            steeringSmoother = Mathf.Lerp(steeringSmoother, _kartMovement.Input.x, Time.deltaTime * 5f);
-            PlayerAnimator.SetFloat(m_SteerHash, steeringSmoother);
-
-            // If more than 2 wheels are above the ground then we consider that the kart is airbourne.
-            PlayerAnimator.SetBool(m_GroundHash, _kartMovement.GroundPercent >= 0.5f);
+            _steeringSmoother = Mathf.Lerp(_steeringSmoother, _kartMovement.InputVector.x, Time.deltaTime * 5f);
+            _playerAnimator.SetFloat(_steerHash, _steeringSmoother);
+            _playerAnimator.SetBool(_groundHash, _kartMovement.GroundPercent >= 0.5f);
         }
     }
 }

@@ -588,18 +588,18 @@ MonoBehaviour:
     Steer: 5
     AddedGravity: 0
     Suspension: 0
-  CenterOfMass: {fileID: 2088445357800075713}
-  Wheels:
-  - {fileID: 2088445356385587664}
-  - {fileID: 2088445356657582734}
-  - {fileID: 2088445357104706236}
-  - {fileID: 2088445357858942230}
+  _centerOfMass: {fileID: 2088445357800075713}
+  _wheels:
+  - {fileID: 2088445358072178036}
+  - {fileID: 2088445358072178034}
+  - {fileID: 2088445358072178032}
+  - {fileID: 2088445358072178030}
+  _suspensionBody: {fileID: 888399676680090280}
   GroundLayers:
     serializedVersion: 2
     m_Bits: 3601
   RaycastDist: 0.3
   MinHeightThreshold: -9.42
-  SuspensionBody: {fileID: 888399676680090280}
 --- !u!114 &3053675603637560830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerAnimator: {fileID: 3053675602932305777}
-  Kart: {fileID: 2088445357892864837}
+  _kartMovement: {fileID: 2088445357892864837}
   SteeringParam: Steering
   GroundedParam: Grounded
 --- !u!114 &3203952811914738710
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e237446f589d9458c806d922e78789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  kartController: {fileID: 2088445357892864837}
+  _kartMovementController: {fileID: 2088445357892864837}
   steeringAnimationDamping: 10
   frontWheelRadius: 0.5
   rearWheelRadius: 0.5
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8534e17a0f90604c9afd4f5c73d829f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Id: b1acbda3-dad3-437b-8ae2-650c846ffde6
+  m_Id: f7e825b2-e212-4f9b-9d52-9f509e38945b
 --- !u!65 &2155953203241519584
 BoxCollider:
   m_ObjectHideFlags: 0

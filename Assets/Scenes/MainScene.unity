@@ -7693,6 +7693,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 801682767}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &844028429 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3053675602932305777, guid: e2308d26eb088b14cae968250e87af84,
+    type: 3}
+  m_PrefabInstance: {fileID: 3053675602700686716}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &849316179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10780,7 +10786,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1207105314}
-  m_LocalRotation: {x: 0.018027127, y: 0.00000009103251, z: 0.0000051681614, w: -0.9998375}
+  m_LocalRotation: {x: 0.018027127, y: 0.00000009103248, z: 0.0000051681614, w: -0.9998375}
   m_LocalPosition: {x: -84.9, y: 2.26, z: -25.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -12705,7 +12711,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1389235981}
-  m_LocalRotation: {x: 0.018027127, y: 0.00000009103251, z: 0.0000051681614, w: -0.9998375}
+  m_LocalRotation: {x: 0.018027127, y: 0.00000009103248, z: 0.0000051681614, w: -0.9998375}
   m_LocalPosition: {x: -84.9, y: 2.26, z: -25.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -18713,6 +18719,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kart
       objectReference: {fileID: 0}
+    - target: {fileID: 2088445357892864837, guid: e2308d26eb088b14cae968250e87af84,
+        type: 3}
+      propertyPath: MinHeightThreshold
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18768,16 +18779,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3053675603198271920, guid: e2308d26eb088b14cae968250e87af84,
-        type: 3}
-      propertyPath: _kartMovementController
-      value: 
-      objectReference: {fileID: 3934862072311242297}
     - target: {fileID: 3053675603637560830, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
-      propertyPath: _kartMovement
+      propertyPath: _playerAnimator
       value: 
-      objectReference: {fileID: 3934862072311242297}
+      objectReference: {fileID: 844028429}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2308d26eb088b14cae968250e87af84, type: 3}
 --- !u!4 &3934862072311242274 stripped
@@ -18786,15 +18792,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3053675602700686716}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3934862072311242297 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2088445357892864837, guid: e2308d26eb088b14cae968250e87af84,
-    type: 3}
-  m_PrefabInstance: {fileID: 3053675602700686716}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b2e8893a3093437d9d101b53db56941, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
