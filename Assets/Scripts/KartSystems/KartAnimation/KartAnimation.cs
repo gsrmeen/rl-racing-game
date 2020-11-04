@@ -71,7 +71,7 @@ namespace KartGame.KartSystems
         }
 
         [Tooltip("What kart do we want to listen to?")]
-        public ArcadeKart kartController;
+        public KartMovement _kartMovementController;
 
         [Space]
         [Tooltip("The damping for the appearance of steering compared to the input.  The higher the number the less damping.")]
@@ -110,7 +110,7 @@ namespace KartGame.KartSystems
 
         void FixedUpdate() 
         {
-            m_SmoothedSteeringInput = Mathf.MoveTowards(m_SmoothedSteeringInput, kartController.Input.x, 
+            m_SmoothedSteeringInput = Mathf.MoveTowards(m_SmoothedSteeringInput, _kartMovementController.Input.x, 
                 steeringAnimationDamping * Time.deltaTime);
         }
 
@@ -124,7 +124,7 @@ namespace KartGame.KartSystems
             frontLeftWheel.SetToDefaultRotation();
             frontRightWheel.SetToDefaultRotation();
 
-            float speed = kartController.LocalSpeed() * 10f;
+            float speed = _kartMovementController.LocalSpeed() * 10f;
             float rotationAngle = speed * Time.deltaTime * m_InverseFrontWheelRadius * Mathf.Rad2Deg;
             frontLeftWheel.TurnWheel(rotationAngle);
             frontRightWheel.TurnWheel(rotationAngle);
