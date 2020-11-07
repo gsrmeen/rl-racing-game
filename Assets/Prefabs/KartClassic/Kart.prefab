@@ -565,6 +565,7 @@ GameObject:
   - component: {fileID: 3203952811914738710}
   - component: {fileID: 3053675604459100955}
   - component: {fileID: 2240253539851232964}
+  - component: {fileID: 3386974087242464100}
   m_Layer: 2
   m_Name: Kart
   m_TagString: Player
@@ -653,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8534e17a0f90604c9afd4f5c73d829f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Id: 456a7838-336d-4a5c-b92d-3b939f1aea83
+  m_Id: d955cb8d-d525-470e-9846-57e17a32986f
 --- !u!114 &2240253539851232964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,6 +668,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainCollider: {fileID: 244532794802667750}
+--- !u!114 &3386974087242464100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088445357892864836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c6a3215f2843a98f44e9bb00a95953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3657308167776221304
 GameObject:
   m_ObjectHideFlags: 0
