@@ -1,13 +1,10 @@
 {
   "dependencies": {
-    "com.unity.barracuda": "0.5.0-preview",
     "com.unity.cinemachine": "2.5.0",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.connect.share": "1.2.0-preview.1",
     "com.unity.ide.rider": "1.1.4",
-    "com.unity.ide.vscode": "1.2.1",
-    "com.unity.learn.iet-framework": "0.3.0-preview.5",
-    "com.unity.ml-agents": "1.0.5",
+    "com.unity.ml-agents": "file:D:/Studia/_RL/ml-agents-release_9/ml-agents-release_9/com.unity.ml-agents",
     "com.unity.postprocessing": "2.3.0",
     "com.unity.probuilder": "4.2.3",
     "com.unity.test-framework": "1.1.16",

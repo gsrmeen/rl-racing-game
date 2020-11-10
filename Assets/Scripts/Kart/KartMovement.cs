@@ -17,14 +17,14 @@ namespace KartGame.KartSystems
         private KartStats _stats;
         private Vector2 _inputVector;
         private bool _canMove = true;
-        private BaseInput _input;
+        private IInput _input;
         private Vector3 _suspensionNeutralPos;
         private float _airPercent => 1f - GroundPercent;
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
-            _input = GetComponent<BaseInput>();
+            _input = GetComponent<IInput>();
             var bodyTransform = _suspensionBody.transform;
             _suspensionNeutralPos = bodyTransform.localPosition;
         }

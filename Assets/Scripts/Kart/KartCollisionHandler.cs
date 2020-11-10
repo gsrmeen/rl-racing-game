@@ -8,12 +8,13 @@ public class KartCollisionHandler : MonoBehaviour
 {
     [SerializeField] private GameObject _mainCollider;
     private LayerMask _layersToAvoid;
+    private KartRespawnable _respawnable;
 
     private void Start()
     {
         _layersToAvoid = Registry.ProjectSettings.globalSettings.layersToAvoid;
+        _respawnable = GetComponent<KartRespawnable>();
     }
-
 
     private void OnCollisionEnter(Collision other)
     {
@@ -28,5 +29,6 @@ public class KartCollisionHandler : MonoBehaviour
     private void HandleCollision()
     {
         gameObject.SetActive(false);
+        _respawnable.RaiseOnDeath();
     }
 }

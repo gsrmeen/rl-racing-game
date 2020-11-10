@@ -562,9 +562,9 @@ GameObject:
   - component: {fileID: 2088445357892864862}
   - component: {fileID: 2088445357892864834}
   - component: {fileID: 2088445357892864837}
-  - component: {fileID: 3053675604459100955}
   - component: {fileID: 2240253539851232964}
   - component: {fileID: 3386974087242464100}
+  - component: {fileID: 1477879989258809014}
   m_Layer: 13
   m_Name: BaseKart
   m_TagString: Player
@@ -630,19 +630,6 @@ MonoBehaviour:
   _suspensionBody: {fileID: 888399676680090280}
   _rb: {fileID: 2088445357892864834}
   _suspensionAnimator: {fileID: 8330656577432056399}
---- !u!114 &3053675604459100955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2088445357892864836}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8534e17a0f90604c9afd4f5c73d829f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Id: 84f509ab-c3da-4c2e-a8c2-aed4d2298e5d
 --- !u!114 &2240253539851232964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,6 +653,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82c6a3215f2843a98f44e9bb00a95953, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1477879989258809014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088445357892864836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a33b867f37c4a779adc275b9773d0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3657308167776221304

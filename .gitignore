@@ -44,6 +44,10 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+# venv for MLAgents
+MLAgents/venv/*
+.idea/*
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta

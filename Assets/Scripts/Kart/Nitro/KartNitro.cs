@@ -10,14 +10,14 @@ public class KartNitro : MonoBehaviour
 
     private Rigidbody _rb;
     private bool _active;
-    private BaseInput _input;
+    private IInput _input;
     private NitroStats _stats;
     private float _nonActiveTimer;
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _input = GetComponent<BaseInput>();
+        _input = GetComponent<IInput>();
         _stats = Registry.ProjectSettings.kartStats.NitroStats;
         Amount = _stats.MaxDuration;
     }
