@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-namespace KartGame.KartSystems
+public interface IInput
 {
-    public abstract class BaseInput : MonoBehaviour
-    {
-        public abstract Vector2 RetrieveMovementInput();
-        public abstract bool RetrieveNitroInput();
-    }
+    Vector2 RetrieveMovementInput();
+    bool RetrieveNitroInput();
+}
+
+public abstract class BaseInput : MonoBehaviour, IInput
+{
+    public abstract Vector2 RetrieveMovementInput();
+    public abstract bool RetrieveNitroInput();
 }

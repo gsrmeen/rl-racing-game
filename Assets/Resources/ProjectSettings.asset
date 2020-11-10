@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f39d527cca674405b22bf3a1d613c533, type: 3}
   m_Name: ProjectSettings
   m_EditorClassIdentifier: 
+  globalSettings:
+    layersToAvoid:
+      serializedVersion: 2
+      m_Bits: 10240
   kartStats:
     TopSpeed: 13
     Acceleration: 3
@@ -30,3 +34,8 @@ MonoBehaviour:
       VelocityIncrease: 2.5
       MaxDuration: 3
       RechargeDelay: 2
+  _raycastSettings:
+    RaycastDelay: 0.6
+    DebugRaysDuration: 1
+    VisualMinRange: 3
+    VisualMaxRange: 7

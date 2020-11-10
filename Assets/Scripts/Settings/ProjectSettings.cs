@@ -4,7 +4,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ProjectSettings", menuName = "Settings/ProjectSettings")]
 public class ProjectSettings : ScriptableObject
 {
+    public GlobalSettings globalSettings;
     public KartStats kartStats;
+    public RaycastSettings _raycastSettings;
+}
+
+[Serializable]
+public struct GlobalSettings
+{
+    public LayerMask layersToAvoid;
 }
 
 [Serializable]
@@ -32,4 +40,13 @@ public struct NitroStats
     public float VelocityIncrease;
     public float MaxDuration;
     public float RechargeDelay;
+}
+
+[Serializable]
+public struct RaycastSettings
+{
+    public float RaycastDelay;
+    public float DebugRaysDuration;
+    public float VisualMinRange;
+    public float VisualMaxRange;
 }
