@@ -188,6 +188,20 @@ Transform:
   m_Father: {fileID: 2806723611913667110}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -40, z: 0}
+--- !u!114 &67250267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6282377780819489500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 10
+  TakeActionsBetweenDecisions: 1
 --- !u!114 &300410246685110778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 8
+    VectorObservationSize: 9
     NumStackedVectorObservations: 1
     VectorActionSize: 03000000
     VectorActionDescriptions: []
@@ -251,20 +265,6 @@ MonoBehaviour:
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_ObservableAttributeHandling: 0
---- !u!114 &67250267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6282377780819489500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 10
-  TakeActionsBetweenDecisions: 1
 --- !u!1 &6529227287815823271
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,7 +370,7 @@ PrefabInstance:
     - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -85
+      value: -83.17
       objectReference: {fileID: 0}
     - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}

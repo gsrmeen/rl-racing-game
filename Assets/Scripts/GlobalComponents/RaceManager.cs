@@ -36,7 +36,6 @@ public class RaceManager : MonoBehaviour
 
     private void HandleAllKartsDeath()
     {
-        Debug.Log("All karts died, respawning");
         _currentKartsAlive = _respawnables.Length;
         foreach (var respawnable in _respawnables)
         {

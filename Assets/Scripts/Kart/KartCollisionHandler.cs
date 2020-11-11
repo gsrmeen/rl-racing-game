@@ -22,11 +22,11 @@ public class KartCollisionHandler : MonoBehaviour
             p.thisCollider.name == _mainCollider.name &&
             _layersToAvoid.ContainsGameObjectsLayer(p.otherCollider.gameObject)))
         {
-            HandleCollision();
+            HandleDeathCollision();
         }
     }
 
-    private void HandleCollision()
+    private void HandleDeathCollision()
     {
         gameObject.SetActive(false);
         _respawnable.RaiseOnDeath();
