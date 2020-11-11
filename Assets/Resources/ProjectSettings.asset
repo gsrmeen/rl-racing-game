@@ -16,6 +16,13 @@ MonoBehaviour:
     layersToAvoid:
       serializedVersion: 2
       m_Bits: 10240
+    rewardLayers:
+      serializedVersion: 2
+      m_Bits: 16384
+  agentSettings:
+    velocityMaxReward: 0.3
+    checkPointReward: 3
+    approxMaxVelocity: 45
   kartStats:
     TopSpeed: 13
     Acceleration: 3
@@ -35,7 +42,6 @@ MonoBehaviour:
       MaxDuration: 3
       RechargeDelay: 2
   _raycastSettings:
-    RaycastDelay: 0.6
     DebugRaysDuration: 1
     VisualMinRange: 3
     VisualMaxRange: 7

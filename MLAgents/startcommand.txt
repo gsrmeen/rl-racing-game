@@ -1,3 +1,5 @@
 cd D:\Studia\_RL\rl-racing-game\MLAgents
 D:\Studia\_RL\rl-racing-game\MLAgents\venv\Scripts\Activate.ps1
 mlagents-learn D:\Studia\_RL\rl-racing-game\MLAgents\agentkart_config.yaml --run-id=firstLearnRun
+
+tensorboard --logdir results --port 6006

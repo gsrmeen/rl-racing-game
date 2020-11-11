@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectSettings : ScriptableObject
 {
     public GlobalSettings globalSettings;
+    public AgentSettings agentSettings;
     public KartStats kartStats;
     public RaycastSettings _raycastSettings;
 }
@@ -13,6 +14,15 @@ public class ProjectSettings : ScriptableObject
 public struct GlobalSettings
 {
     public LayerMask layersToAvoid;
+    public LayerMask rewardLayers;
+}
+
+[Serializable]
+public struct AgentSettings
+{
+    public float velocityMaxReward;
+    public float checkPointReward;
+    public float approxMaxVelocity;
 }
 
 [Serializable]
@@ -45,7 +55,6 @@ public struct NitroStats
 [Serializable]
 public struct RaycastSettings
 {
-    public float RaycastDelay;
     public float DebugRaysDuration;
     public float VisualMinRange;
     public float VisualMaxRange;
