@@ -1,0 +1,135 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{titling}
+\usepackage[OT4]{fontenc}
+\usepackage[english,polish]{babel}
+\usepackage{amsmath, amsfonts, amsthm, latexsym}
+
+% Margins in document
+%\usepackage[left=2.5cm, right=2.5cm, top=3.5cm]{geometry}
+
+% Indentation at the beginning of chapters/sections
+\usepackage{indentfirst}
+
+% Ceiling functions
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+% Avoid  colons before tables' empty captions and change caption
+\usepackage{caption}
+\captionsetup[table]{name=Tab.}
+\captionsetup[figure]{name=Rys.}
+
+% Don't know why, it starts from 2
+\addtocounter{table}{0}
+
+% Rename tables' suffix
+\renewcommand{\tablename}{Tab.}
+
+% Graphicx setup
+\usepackage{graphicx}
+\graphicspath{{graphics/}{../graphics/}}
+
+% No separator between items
+\usepackage{enumitem}
+\setlist{nolistsep}
+
+% Pagebreak before every \section
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection}
+
+% Bigger padding in tabulars
+\usepackage{array}
+\setlength\extrarowheight{3pt}
+
+%\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+
+% Itemize in tabulars (avoid big margins with minipage)
+\newcommand{\tabbeditemize}[1]{
+	\begin{minipage}[t]{0.4\textwidth}
+		\begin{itemize}[topsep=0mm,partopsep=0mm,leftmargin=4mm]
+			#1
+		\end{itemize}
+\end{minipage}}
+
+% listings
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\definecolor{codegreen}{rgb}{0,0.7,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+	language=Python,
+	deletekeywords={from},
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=4
+}
+\makeatletter
+\newcommand*{\toccontents}{\@starttoc{tableofcontents}}
+\makeatother
+
+
+% DOCUMENT
+\title{Sprawozdanie \\
+\Large Zastosowanie uczenia maszynowego do gry wyścigowej}
+
+\author{Mateusz Burczaniuk,\\ Patryk Fijałkowski}
+\date{07.12.2020}
+
+
+% ============================================
+% CONTENT ====================================
+% ============================================
+
+\begin{document}
+	\maketitle
+	%\vspace{3cm}
+	\tableofcontents
+
+\section{Wprowadzenie}
+\subsection{Problem}
+% W tym rozdziale trzeba opisać problem - czyli 2-3 samochodzików na torze, mają nieskończone nitro, które wymaga regeneracji, na torze są przeszkody, śmierć przy kolizji z czymkolwiek..
+
+\subsection{PPO}
+% W rozdziałach o PPO i SAC chcemy teoretycznego wprowadzenia, co to za algorytmy i jak działają. Myślę, że nie warto skupiać się na bardzo low-levelowej matmie, raczej skupmy się na charakterze obu tych metod, a taki matematyczny background wprowadzić bardzo lekko. Niżej wrzucam link do parametrów, które możemy konfigurować w kontekście obu algorytmów - Trainer-specific Configurations. Podczas opisywania skup się na nich. Warto opisać wszystkie hyperparameters, a są też network_settings, opisujące sieci które są tworzone, więc na ten temat trzeba napisać w subsection Sieci neuronowe.
+%https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-Configuration-File.md#trainer-specific-configurations
+
+\subsection{SAC}
+
+\subsection{Sieci neuronowe}
+
+\section{Eksperymenty}
+% Trzeba opisać czynniki które uwzględniamy przy uczeniu: checkpointy, liczba raycastów, wartość wypłat itp.
+
+
+\section{Wnioski}
+
+
+\begin{thebibliography}{20}
+	%\bibitem[1]{kret} Krętowska M., \textit{Sztuczne sieci neuronowe. Wykład 12: Sieci samoorganizujące się typu Hebba}, \url{http://aragorn.pb.bialystok.pl/~gkret/SSN/SSN_w12.PDF}
+	%\bibitem[2]{similar} N.M. Nasrabadi, W. Li, \textit{Object recognition by a Hopfield neural network}, IEEE Transactions on Systems, Man, and Cybernetics, vol. 21, no. 6, pp. 1523-1535, 1991.
+	%\bibitem[3]{capacity} Y. Abu-Mostafa and J. St. Jacques, \textit{Information capacity of the Hopfield model}, in IEEE Transactions on Information Theory, vol. 31, no. 4, pp. 461-464, 1985.
+\end{thebibliography}
+
+
+
+\end{document}
