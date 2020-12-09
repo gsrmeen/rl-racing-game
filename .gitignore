@@ -47,6 +47,7 @@ ExportedObj/
 # venv for MLAgents
 MLAgents/venv/*
 MLAgents/results/*
+MLAgents/results_presentation/*
 .idea/*
 
 # Unity3D generated meta files
