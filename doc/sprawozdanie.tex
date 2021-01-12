@@ -107,7 +107,14 @@
 
 \section{Wprowadzenie}
 \subsection{Problem}
-% W tym rozdziale trzeba opisać problem - czyli 2-3 samochodzików na torze, mają nieskończone nitro, które wymaga regeneracji, na torze są przeszkody, śmierć przy kolizji z czymkolwiek..
+Omawiana gra wyścigowa symuluje rywalizację na torze pomiędzy kilkoma samochodami wyścigowymi. Tor, na którym odbywa się rywalizacja jest zamkniętą pętlą otoczoną niezbyt wysokimi ścianami. Poza tym na torze występują także przeszkody. Samochód może poruszać się do przodu oraz skręcać. Zderzenie samochodu gracza ze ścianą lub przeszkodą powoduje natychmiastową śmierć gracza i~koniec gry. Zderzenie dwóch graczy ze sobą powoduje analogiczne skutki (śmierć i~usunięcie z~rozgrywki) dla obu graczy.
+
+Gracz ma zadanie przejechać zadaną trasę jak najszybciej, wyprzedzając swoich rywali. Podczas rywalizacji gracz może znacznie zwiększyć swoją prędkość przy użyciu nitro. Jednak maksymalna dostępna w~danej chwili ilość nitro jest ograniczona, więc gracz nie może używać go bez przerwy. Zużyte nitro stopniowo odnawia się i~po pewnym czasie wraca do pierwotnego poziomu. Może ono odnawiać się nieskończoną liczbę razy.
+
+Wszystkie rozważane pojazdy mają taki same parametry techniczne i~osiągi, w~związku z~czym wygrana lub przegrana w~wyścigu zależy wyłącznie od obranego przez nie sposobu przemieszczania się po torze.
+
+Zatem postawiony problem składa się z~kilku zagadnień - należy zoptymalizować politykę doboru kierunku poruszania się gracza oraz używania nitro tak, aby przejechać całą trasę bez żadnego zderzenia, a~jednocześnie jak najszybciej, pozostawiając rywali za sobą. Zadania te w~pewnym stopniu konfliktują ze sobą, gdyż optymalną strategią w~celu uniknięcia zderzeń jest stanie w~miejscu, natomiast dążenie do uzyskania optymalnego czasu przejazdu powoduje wzrost ryzyka zderzenia z~przeszkodą lub innym pojazdem.
+
 
 \subsection{PPO}
 % W rozdziałach o PPO i SAC chcemy teoretycznego wprowadzenia, co to za algorytmy i jak działają. Myślę, że nie warto skupiać się na bardzo low-levelowej matmie, raczej skupmy się na charakterze obu tych metod, a taki matematyczny background wprowadzić bardzo lekko. Niżej wrzucam link do parametrów, które możemy konfigurować w kontekście obu algorytmów - Trainer-specific Configurations. Podczas opisywania skup się na nich. Warto opisać wszystkie hyperparameters, a są też network_settings, opisujące sieci które są tworzone, więc na ten temat trzeba napisać w subsection Sieci neuronowe.
