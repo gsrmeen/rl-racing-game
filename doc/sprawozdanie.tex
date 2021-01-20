@@ -191,10 +191,31 @@ Opis działania metody PPO został oparty na artykułach C. Trivediego \cite{ppo
 W~przypadku obu algorytmów zbadane zostaną rozmiar batcha, parametr tempa uczenia sieci neuronowych oraz liczba ich warstw.
 
 \section{Eksperymenty}
-% Trzeba opisać czynniki które uwzględniamy przy uczeniu: checkpointy, liczba raycastów, wartość wypłat itp.
+Przeprowadzone testy podzielono na dwie fazy. Pierwsza ma za zadanie określić najlepsze środowisko i zasady uczenia dla agentów. Z kolei druga faza skupia się na dobraniu jak najbardziej optymalnych parametrów w metodach PPO i SAC. W fazie pierwszej agenci byli uczeni do 100000 kroków, a w przypadku fazy drugiej -- do 200000 kroków.
+
+Za ocenę każdego z nauczonych modeli przyjęto dwie miary: $k, u$. Każda z miar mieści się w zakresie $[0,1]$ i ma ocenić skuteczność wyuczonego modelu w różnych warunkach.
+\begin{itemize}
+	\item Miara $k$ (ang. \textit{known}) - określa, jak dobrze model radzi sobie na torze, na którym przebiegało uczenie.
+	\item Miara $u$ (ang. \textit{unknown}) - określa, jak dobrze model radzi sobie na nowym torze. 
+\end{itemize}
 
 
-\section{Wnioski}
+\subsection{Faza pierwsza}
+\subsubsection{Punkty kontrolne}
+\subsubsection{Nagroda za przeżycie}
+Sprawdzono różne podejścia nagradzania agentów. Trzy zasadnicze podejścia do udzielania wypłat:
+\begin{itemize}
+	\item wypłata za przejechanie punktu kontrolnego,
+	\item wypłata zwiększana z czasem życia agenta,
+	\item wypłata zależna od aktualnej prędkości.
+\end{itemize}
+
+\subsubsection{Raycasty}
+Postanowiono sprawdzić wpływ liczby obserwacji odległości agenta od najbliższej przeszkody. W każdym z przypadków wysyłano raycasty z dwóch przednich narożników samochodu. Promienie były ustawione do siebie pod takim kątem, by pierwszy z nich celował z frontu samochody, a ostatni był pod kątem $60^{\circ}$. Zbadano cztery możliwości -- wysyłanie odpowiednio 6, 8, 10 i 12 raycastów przez agenta.
+
+\subsection{Faza druga}
+\subsubsection{PPO}
+\subsubsection{SAC}
 
 
 \begin{thebibliography}{20}
