@@ -3,7 +3,9 @@
 \usepackage[OT4]{fontenc}
 \usepackage[english,polish]{babel}
 \usepackage{amsmath, amsfonts, amsthm, latexsym}
-
+\DeclareRobustCommand{\sqbullet}{%
+	\raisebox{.3ex}{\rule{.3em}{.3em}}%
+}
 % Margins in document
 %\usepackage[left=2.5cm, right=2.5cm, top=3.5cm]{geometry}
 
@@ -117,7 +119,13 @@ Wszystkie rozważane pojazdy mają taki same parametry techniczne i~osiągi, w~z
 
 Zatem postawiony problem składa się z~kilku zagadnień - należy zoptymalizować politykę doboru kierunku poruszania się gracza oraz używania nitro tak, aby przejechać całą trasę bez żadnego zderzenia, a~jednocześnie jak najszybciej, pozostawiając rywali za sobą. Zadania te w~pewnym stopniu konfliktują ze sobą, gdyż optymalną strategią w~celu uniknięcia zderzeń jest stanie w~miejscu, natomiast dążenie do uzyskania optymalnego czasu przejazdu powoduje wzrost ryzyka zderzenia z~przeszkodą lub innym pojazdem.
 
-Problem próbowano rozwiązać za pomocą dwóch metod: PPO oraz SAC.
+%Cel projektu
+
+\subsection{Stan wiedzy}
+
+Omawiany problem reprezentuje zagadnienie kontroli w~ciągłej przestrzeni stanów. Istnieje kilka sposobów rozwiązywania tego typu problemów. Do czołowych algorytmów w~tej dziedzinie należą obecnie zarówno metody on-policy, jak i~off policy. W~niniejszej pracy w~kontekście omawianego zadania przetestowano dwie stosunkowo młode metody, ale znacznie różniące się metody: PPO oraz SAC.
+
+%Krótkie omówienie „stanu techniki”–czy jest jakiś benchmark do porównania?To może być 1-2 zdania
 
 \subsection{PPO}
 Proximal Policy Optimization, czyli PPO to nowa metoda, wprowadzona w~2017 roku. Wykorzystuje ona metodę aktor- krytyk, posługując się dwoma sieciami neuronowymi. Aktor jest reprezentowany przez sieć neuronową, która wykonuje zadanie klasyfikacji, wybierając, jaką akcję podjąć przy obserwowanym stanie środowiska. Krytyk to druga sieć, o~podobnej strukturze, która uczy się oceniać, czy poszczególne akcje poprawiają, czy pogarszają stan. Krytyk zwraca Q-wartość akcji wybranej w~poprzednim stanie. Na tej podstawie aktor modyfikuje swoją politykę, dbając, by nie przeprowadzić zbyt dużych zmian.
@@ -186,9 +194,71 @@ Opis działania metody PPO został oparty na artykułach C. Trivediego \cite{ppo
 
 \subsection{SAC}
 
+Soft Actor-Critic, czyli SAC to też stosunkowo nowa metoda do rozwiązywania tego typu problemów. W~przeciwieństwie do PPO jest to metoda off-policy, czyli wyniki uzyskane przy użyciu jednej polityki są wykorzystywane do oceny następnych polityk.
+
+Algorytm ten modyfikuje funkcję celu, aby maksymalizować nie tylko nagrody, ale również entropię polityki, aby wspierać eksplorację przestrzeni stanów. Funkcja ta jest zdefiniowana następująco:
+
+\begin{equation}
+	J(\pi) = \sum_{t=0}^T \mathbb{E}_{(s_t,a_t) \sim \rho_\pi} [r(s_t,a_t) + \alpha H(\pi(\cdot |s_t))]
+\end{equation}
+
+$\alpha$ to parametr, który określa wagę entropii.
+
+SAC używa trzech sieci neuronowych:
+\begin{itemize}
+	\item określającej wartość stanu V z~parametrem $\psi$,
+	\item określającej funkcję Q z~parametrem $\theta$,
+	\item określającej funkcję polityki z~parametrem $\phi$.
+\end{itemize}
+
+Sieć V jest uczona tak, aby zminimalizować błąd  kwadratowy pomiędzy predykcją wartości zwracanej przez sieć a wartością oczekiwaną sumy funkcji Q i~entropii:
+
+\begin{equation}
+J_V(\psi) = \mathbb{E}_{s_t \sim D}\Big[ \frac{1}{2}\big(V_\psi(s_t) - \mathbb{E}_{a_t ~\pi_\phi} [Q_\theta(s_t,a_t) - log \pi_\phi (a_t|s_t)] \big)^2\Big]
+\end{equation}
+
+Sieć Q minimalizuje błąd średniokwadratowy pomiędzy predykcją funkcji Q a natychmiastową nagrodą zsumowaną ze zdyskontowaną predykcją wartości następnego stanu.
+
+\begin{equation}
+	J_Q(\theta) = \mathbb(E)_{(s_t,a_t) \sim D}\Big[
+		\frac{1}{2} \big(
+			Q_\theta(s_t,a_t) - r(s_t,a_t) - \gamma \mathbb{E}_{s_{t+1 \sim p}}[V_{\bar{\psi}}(s_{t+1})]
+		\big)
+	\Big]
+\end{equation}
+
+Sieć $\pi$ ma za zadanie minimalizować różnicę pomiędzy wartością zwracaną przez sieć  a~wartością $\frac{exp(Q_\theta(s_t,\cdot))}{Z_\theta(s_t)}$, gdzie Z to funkcja normalizująca. Matematyczny opis tej zależności wykorzystuje dywergencję Kullbacka-Leiblera i~można go przedstawić przy użyciu wzoru:
+
+\begin{equation}
+	J_\pi(\phi) = \mathbb(E)_{s_t \sim D}\Big[ D_{KL} \big(\pi_\phi(\cdot|s_t) || \frac{exp(Q_\theta(s_t,\cdot))}{Z_\theta(s_t)}  \big) \Big]
+\end{equation}
+
+Przy wyliczaniu tej wartości używana jest też pewna technika reparemetryzacji.
 
 
-W~przypadku obu algorytmów zbadane zostaną rozmiar batcha, parametr tempa uczenia sieci neuronowych oraz liczba ich warstw.
+
+Schemat algorytmu przedstawiono na Listingu \ref{alg:sac}.
+\begin{algorithm}[h!]
+	\caption{SAC}
+	\label{alg:sac}
+	\begin{algorithmic}[1]
+		\STATE $\psi, \bar{\psi}, \theta,\phi - dane parametry$
+		\FOR {$i=0,\dots,max\_iteration$}
+			\FOR {ruch środowiska}
+				\STATE $a_t \sim \pi_{\phi}(a_t|s_t)$
+				\STATE $_{t+1} \sim p(s_{t+1}|s_t,a_t)$
+				\STATE $D \gets D \cup \{(s_t,a_t,r(s_t,a_t),s_{t+1})\}$
+			\ENDFOR
+		\ENDFOR
+		\STATE Popraw parametry sieci przy użyciu gradientów poszczególnych funkcji dopasowania.
+	\end{algorithmic}
+\end{algorithm}
+
+Opis algorytmu sporządzono w oparciu o~artykuły \cite{kumar},\cite{nieznany}.
+
+W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia wartości parametru $\alpha$ związanego z~entropią. Zbadano również działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. Domyślnie wartość ta wynosi 0, ale powszechne jest wykorzystywaniu w~tym miejscu 1000 - 10000 doświadczeń.
+
+W~przypadku obu algorytmów przetestowano różne rozmiary batcha, parametry tempa uczenia sieci neuronowych oraz liczby ich warstw.
 
 \section{Eksperymenty}
 Przeprowadzone testy podzielono na dwie fazy. Pierwsza ma za zadanie określić najlepsze środowisko i zasady uczenia dla agentów. Z kolei druga faza skupia się na dobraniu jak najbardziej optymalnych parametrów w metodach PPO i SAC. W fazie pierwszej agenci byli uczeni do 100000 kroków, a w przypadku fazy drugiej -- do 200000 kroków.
@@ -219,11 +289,10 @@ Postanowiono sprawdzić wpływ liczby obserwacji odległości agenta od najbliż
 
 
 \begin{thebibliography}{20}
-	\bibitem[1]{ppo1} Trivedi C., \textit{Proximal Policy Optimization Tutorial (Part 1/2: Actor-Critic Method)}, \url{https://towardsdatascience.com/proximal-policy-optimization-tutorial-part-1-actor-critic-method-d53f9afffbf6}, 2019.
-	\bibitem[2]{ppo2} Trivedi C., \textit{Proximal Policy Optimization Tutorial (Part 2/2: GAE and PPO loss)}, \url{https://towardsdatascience.com/proximal-policy-optimization-tutorial-part-2-2-gae-and-ppo-loss-fe1b3c5549e8}, 2019.
-	%\bibitem[1]{kret} Krętowska M., \textit{Sztuczne sieci neuronowe. Wykład 12: Sieci samoorganizujące się typu Hebba}, \url{http://aragorn.pb.bialystok.pl/~gkret/SSN/SSN_w12.PDF}
-	%\bibitem[2]{similar} N.M. Nasrabadi, W. Li, \textit{Object recognition by a Hopfield neural network}, IEEE Transactions on Systems, Man, and Cybernetics, vol. 21, no. 6, pp. 1523-1535, 1991.
-	%\bibitem[3]{capacity} Y. Abu-Mostafa and J. St. Jacques, \textit{Information capacity of the Hopfield model}, in IEEE Transactions on Information Theory, vol. 31, no. 4, pp. 461-464, 1985.
+	\bibitem[1]{kumar}Kumar V., \textit{Soft Actor-Critic Demystified}, \url{https://towardsdatascience.com/soft-actor-critic-demystified-b8427df61665}. 2019.
+	\bibitem[2]{ppo1} Trivedi C., \textit{Proximal Policy Optimization Tutorial (Part 1/2: Actor-Critic Method)}, \url{https://towardsdatascience.com/proximal-policy-optimization-tutorial-part-1-actor-critic-method-d53f9afffbf6}, 2019.
+	\bibitem[3]{ppo2} Trivedi C., \textit{Proximal Policy Optimization Tutorial (Part 2/2: GAE and PPO loss)}, \url{https://towardsdatascience.com/proximal-policy-optimization-tutorial-part-2-2-gae-and-ppo-loss-fe1b3c5549e8}, 2019.
+	\bibitem[4]{nieznany} \textit{SAC (soft actor-critic) algorithm for reinforcement learning}, \url{https://www.programmersought.com/article/77705189397/}
 \end{thebibliography}
 
 
