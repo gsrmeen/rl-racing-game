@@ -24,15 +24,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanKart
       objectReference: {fileID: 0}
-    - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
+    - target: {fileID: 2088445357892864836, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
-      propertyPath: m_LocalPosition.x
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -83.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 2088445357892864862, guid: e2308d26eb088b14cae968250e87af84,
         type: 3}

@@ -8,7 +8,9 @@ public class MyKartAgent : Agent, IInput
     private KartAgentRaycaster _raycaster;
     private KartRespawnable _respawnable;
     private KartCollisionHandler _handler;
+    private KartLapCompletion _lapCompletion;
     private AgentSettings _agentSettings;
+    private KartNitro _kartNitro;
 
     private Vector2 _movementVector;
     private bool _nitroInput;
@@ -22,17 +24,27 @@ public class MyKartAgent : Agent, IInput
         _raycaster = GetComponent<KartAgentRaycaster>();
         _respawnable = GetComponent<KartRespawnable>();
         _handler = GetComponent<KartCollisionHandler>();
+        _kartNitro = GetComponent<KartNitro>();
+        _lapCompletion = GetComponent<KartLapCompletion>();
         _agentSettings = Registry.ProjectSettings.agentSettings;
+        _lapCompletion.OnLapCompleted += HandleLapCompletion;
         _handler.OnRewardCollision += HandleRewardCollision;
         _respawnable.OnDeath += HandleDeath;
     }
 
     private void OnDestroy()
     {
+        _lapCompletion.OnLapCompleted -= HandleLapCompletion;
         _respawnable.OnDeath -= HandleDeath;
         _handler.OnRewardCollision -= HandleRewardCollision;
     }
 
+    private void HandleLapCompletion(float time)
+    {
+        var recorder = Academy.Instance.StatsRecorder;
+        recorder.Add("LapCompletionTime", time);
+    }
+    
     private void HandleDeath()
     {
         EndEpisode();
@@ -40,12 +52,24 @@ public class MyKartAgent : Agent, IInput
 
     private void HandleRewardCollision()
     {
-        SetReward(_agentSettings.checkPointReward);
+        if (_agentSettings.rewardCheckpoints)
+        {
+            SetReward(_agentSettings.checkPointReward);
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(_rb.velocity.magnitude);
+        if (_agentSettings.observeVelocity)
+        {
+            sensor.AddObservation(_rb.velocity.magnitude);
+        }
+
+        if (_agentSettings.observeNitro)
+        {
+            sensor.AddObservation(_kartNitro.PercentageAmount);
+        }
+
         var distances = _raycaster.ShootRaycasts();
         foreach (var distance in distances)
         {
@@ -57,11 +81,19 @@ public class MyKartAgent : Agent, IInput
     {
         ParseActions(actions[0], actions[1], actions[2]);
 
-        var velocity = _rb.velocity;
-        var velocitySummed = Mathf.Abs(velocity.x) + Mathf.Abs(velocity.z);
-        var reward = _agentSettings.velocityMaxReward *
-                     Mathf.Clamp01(velocitySummed / _agentSettings.approxMaxVelocity);
-        SetReward(reward);
+        if (_agentSettings.rewardForLiving)
+        {
+            SetReward(_agentSettings.livingReward);
+        }
+        
+        if (_agentSettings.rewardVelocity)
+        {
+            var velocity = _rb.velocity;
+            var velocitySummed = Mathf.Abs(velocity.x) + Mathf.Abs(velocity.z);
+            var reward = _agentSettings.velocityMaxReward *
+                         Mathf.Clamp01(velocitySummed / _agentSettings.approxMaxVelocity);
+            SetReward(reward);
+        }
     }
 
     private void ParseActions(float x, float z, float nitro)

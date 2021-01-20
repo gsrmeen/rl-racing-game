@@ -20,9 +20,15 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 16384
   agentSettings:
-    velocityMaxReward: 0.3
-    checkPointReward: 3
+    observeVelocity: 0
+    observeNitro: 1
+    rewardVelocity: 1
+    velocityMaxReward: 0.15
     approxMaxVelocity: 45
+    rewardCheckpoints: 1
+    checkPointReward: 10
+    rewardForLiving: 0
+    livingReward: 0
   kartStats:
     TopSpeed: 13
     Acceleration: 3

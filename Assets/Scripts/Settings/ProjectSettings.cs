@@ -20,9 +20,18 @@ public struct GlobalSettings
 [Serializable]
 public struct AgentSettings
 {
+    // Observations
+    public bool observeVelocity;
+    public bool observeNitro;
+    
+    // Rewards
+    public bool rewardVelocity;
     public float velocityMaxReward;
-    public float checkPointReward;
     public float approxMaxVelocity;
+    public bool rewardCheckpoints;
+    public float checkPointReward;
+    public bool rewardForLiving;
+    public float livingReward;
 }
 
 [Serializable]

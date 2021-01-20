@@ -5,7 +5,10 @@ using UnityEngine;
 public class KartCollisionHandler : MonoBehaviour
 {
     public event Action OnRewardCollision;
+    public event Action OnLapFinished;
 
+    [SerializeField] private GameObject _preLastCheckPoint;
+    [SerializeField] private GameObject _lastCheckPoint;
     [SerializeField] private GameObject _mainCollider;
     private LayerMask _layersToAvoid;
     private LayerMask _rewardLayers;
@@ -32,6 +35,12 @@ public class KartCollisionHandler : MonoBehaviour
     {
         if (CanRewardCollision(other.gameObject))
         {
+            if (_lastRewardTriggerName == _preLastCheckPoint.name &&
+                other.gameObject.name == _lastCheckPoint.name)
+            {
+                OnLapFinished?.Invoke();
+            }
+            
             HandleRewardCollision();
             _lastRewardTriggerName = other.gameObject.name;
         }
