@@ -2,7 +2,7 @@ behaviors:
   AgentKart:
     trainer_type: sac
     hyperparameters:
-      buffer_init_steps: 100
+      buffer_init_steps: 1000
       init_entcoef: 0.7
     network_settings:
       normalize: false
@@ -12,6 +12,6 @@ behaviors:
       extrinsic:
         gamma: 0.99
         strength: 1.0
-    max_steps: 100000
+    max_steps: 200000
     time_horizon: 64
-    summary_freq: 10000
+    summary_freq: 500
