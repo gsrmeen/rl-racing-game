@@ -126,6 +126,9 @@ Omawiany problem reprezentuje zagadnienie kontroli w~ciągłej przestrzeni stan�
 
 %Krótkie omówienie „stanu techniki”–czy jest jakiś benchmark do porównania?To może być 1-2 zdania
 
+\subsection{Użyte technologie}
+Prezentowane rozwiązanie zostało wykonane w silniku Unity w wersji 2019.4.11f1. Wykorzystano również framework ml-agents odpowiedzialny za proces uczenia agentów.
+
 \subsection{PPO}
 Proximal Policy Optimization, czyli PPO to nowa metoda, wprowadzona w~2017 roku. Wykorzystuje ona metodę aktor- krytyk, posługując się dwoma sieciami neuronowymi. Aktor jest reprezentowany przez sieć neuronową, która wykonuje zadanie klasyfikacji, wybierając, jaką akcję podjąć przy obserwowanym stanie środowiska. Krytyk to druga sieć, o~podobnej strukturze, która uczy się oceniać, czy poszczególne akcje poprawiają, czy pogarszają stan. Krytyk zwraca Q-wartość akcji wybranej w~poprzednim stanie. Na tej podstawie aktor modyfikuje swoją politykę, dbając, by nie przeprowadzić zbyt dużych zmian.
 
