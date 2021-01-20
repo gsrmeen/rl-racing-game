@@ -97,7 +97,6 @@
 \Large Zastosowanie uczenia maszynowego do gry wyścigowej}
 
 \author{Mateusz Burczaniuk,\\ Patryk Fijałkowski}
-\date{07.12.2020}
 
 
 % ============================================
@@ -388,6 +387,13 @@ Długość epizodów uczenia w przypadku obu metod jednoznacznie rośnie, co ró
 	\label{pic:length}
 \end{figure}
 
+
+\section{Wnioski}
+Analizując wszystkie wyniki eksperymentów, zauważono że polityki utworzone metodą PPO, mimo że uzyskiwały niższe wyniki na torach, to relatywnie lepiej odnajdywały się w nowym środowisku - miały wyższą miarę $u$. Zdaje się, że agenci korzystający z polityk metody PPO ostrożniej zachowywali się na zakrętach, unikając w ten sposób kolizji z przeszkodami. W obu przypadkach agenci podejmowali dobre decyzje w stałych fragmentach, tj. używali nitro na prostych odcinkach oraz modyfikowali tor jazdy, gdy w zakresie widzenia pojawiały się przeszkody.
+
+Kluczowe w kontekście narzucenia dobrego rytmu uczenia agentom było nagradzanie agentów za osiąganie kolejnych punktów kontrolnych (co wykazano w fazie pierwszej testów). Ponadto, dostosowując parametry obu metod w drugiej fazie testów można istotnie wpłynąć na proces uczenia, co przełoży się na widocznie inne polityki. Co za tym idzie, warto dostosowywać hiperparametry różnych metod, by uzyskane wyniki były jak najbardziej optymalne.
+
+Po ukończeniu eksperymentów, ustawiono 4 najlepsze modele agentów (2 dla PPO i 2 dla SAC) do wspólnego wyścigu. Wyuczone polityki agentów pozwoliły na przeprowadzenie wyrównanych i niejednoznacznych rozgrywek. Potwierdziły się wnioski związane z dysproporcją miar $k$ i $u$ dla obu metod. Na znanym torze metoda SAC sprawdzała lepiej -- agenci korzystający z polityki wyuczonej metodą SAC jeździli ryzykowniej torze i lepiej wykorzystywali swoje nitro. Z kolei w nowym środowisku lepiej wypadały odpowiedniki metody PPO -- zachowywały ostrożność w nieznanych 
 
 \begin{thebibliography}{20}
 	\bibitem[1]{kumar}Kumar V., \textit{Soft Actor-Critic Demystified}, \url{https://towardsdatascience.com/soft-actor-critic-demystified-b8427df61665}. 2019.
