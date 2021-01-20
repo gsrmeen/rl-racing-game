@@ -239,7 +239,7 @@ Schemat algorytmu przedstawiono na Listingu \ref{alg:sac}.
 	\caption{SAC}
 	\label{alg:sac}
 	\begin{algorithmic}[1]
-		\STATE $\psi, \bar{\psi}, \theta,\phi - dane parametry$
+		\STATE $\psi, \bar{\psi}, \theta,\phi$ - dane parametry
 		\FOR {$i=0,\dots,max\_iteration$}
 			\FOR {ruch środowiska}
 				\STATE $a_t \sim \pi_{\phi}(a_t|s_t)$
@@ -339,7 +339,7 @@ W kontekście PPO postanowiono sprawdzić wpływ parametru obcinania $\varepsilo
 \end{table}
 
 \subsubsection{SAC}
-W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia wartości parametru $\alpha$ związanego z~entropią. Zbadano również działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. Domyślnie wartość ta wynosi 0, ale powszechne jest wykorzystywaniu w~tym miejscu 1000 - 10000 doświadczeń. Wyniki zostały zaprezentowane w tabel \ref{tab:sac}
+W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia wartości parametru $\alpha$ związanego z~entropią. Zbadano również działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. Domyślnie wartość ta wynosi 0, ale powszechne jest używa się w~tym miejscu 1000 - 10000 doświadczeń. Wyniki zostały zaprezentowane w tabeli \ref{tab:sac}.
 
 \begin{table}[H]
 	\centering
@@ -358,8 +358,11 @@ W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia warto
 	\label{tab:sac}
 \end{table}
 
+
 \section{Obserwacje}
+
 \subsection{Entropia}
+Podczas analizy wyników zaobserwowano istotną różnice między metodami uczenia PPO i SAC. Wykres ukazujący aminy entropii został ukazany na rysunku \ref{pic:entropy}. Dla przejrzystości zamieszczono 4 krzywe - 2 górne odpowiadają pewnym modelom metody PPO, a 2 dolne -- SAC. Zgodnie z teoretycznymi założeniami, entropia w procesie uczenia dla PPO zmniejsza się wolniej i stabilniej. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{entropy}
@@ -368,6 +371,7 @@ W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia warto
 \end{figure}
 
 \subsection{Szybkość ukończenia wyścigu}
+Po przeprowadzeniu testów zauważono również, że mimo delikatnej tendencji spadkowej, średnie czasy ukończenia wyścigów w trakcie uczenia nie zmieniają się znacznie, co ukazano na wykresie z rysunku \ref{pic:szybkosc}. To oznacza, że agenci wraz z procesem uczenia nie uczą się przejeżdżać toru szybciej, a jedynie skuteczniej omijać przeszkody, co daje im dłuższy czas życia.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{szybkosc}
@@ -376,6 +380,7 @@ W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia warto
 \end{figure}
 
 \subsection{Długość epizodów}
+Długość epizodów uczenia w przypadku obu metod jednoznacznie rośnie, co również wykazuje poprawny charakter uczenia agentów. W przypadku metody SAC (która sprawdziła się lepiej w badanym problemie) długość epizodów rośnie szybciej i uzyskuje wartości $1.5-3$ razy wyższe. Trzy najwyższe krzywe z rysunku \ref{pic:length} odpowiadają lepszej metodzie SAC, a trzy niższe -- PPO.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth]{episode_length}
@@ -390,7 +395,4 @@ W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia warto
 	\bibitem[3]{ppo2} Trivedi C., \textit{Proximal Policy Optimization Tutorial (Part 2/2: GAE and PPO loss)}, \url{https://towardsdatascience.com/proximal-policy-optimization-tutorial-part-2-2-gae-and-ppo-loss-fe1b3c5549e8}, 2019.
 	\bibitem[4]{nieznany} \textit{SAC (soft actor-critic) algorithm for reinforcement learning}, \url{https://www.programmersought.com/article/77705189397/}
 \end{thebibliography}
-
-
-
 \end{document}
