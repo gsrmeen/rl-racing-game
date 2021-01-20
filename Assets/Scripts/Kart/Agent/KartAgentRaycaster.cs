@@ -33,8 +33,8 @@ public class KartAgentRaycaster : MonoBehaviour
 
             var color = new Color(1f - frac, frac, 0f);
 
-            Debug.DrawRay(source.position, source.forward * hit.distance, color,
-                _raycastSettings.DebugRaysDuration);
+            // Debug.DrawRay(source.position, source.forward * hit.distance, color,
+            //     _raycastSettings.DebugRaysDuration);
 
             distances[i] = hit.distance;
         }
