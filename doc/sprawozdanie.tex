@@ -189,11 +189,8 @@ Na podstawie powyższych funkcji oceny używane sieci uczone są przy użyciu me
 
 Opis działania metody PPO został oparty na artykułach C. Trivediego \cite{ppo1},\cite{ppo2}.
 
-% W rozdziałach o PPO i SAC chcemy teoretycznego wprowadzenia, co to za algorytmy i jak działają. Myślę, że nie warto skupiać się na bardzo low-levelowej matmie, raczej skupmy się na charakterze obu tych metod, a taki matematyczny background wprowadzić bardzo lekko. Niżej wrzucam link do parametrów, które możemy konfigurować w kontekście obu algorytmów - Trainer-specific Configurations. Podczas opisywania skup się na nich. Warto opisać wszystkie hyperparameters, a są też network_settings, opisujące sieci które są tworzone, więc na ten temat trzeba napisać w subsection Sieci neuronowe.
-%https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-Configuration-File.md#trainer-specific-configurations
 
 \subsection{SAC}
-
 Soft Actor-Critic, czyli SAC to też stosunkowo nowa metoda do rozwiązywania tego typu problemów. W~przeciwieństwie do PPO jest to metoda off-policy, czyli wyniki uzyskane przy użyciu jednej polityki są wykorzystywane do oceny następnych polityk.
 
 Algorytm ten modyfikuje funkcję celu, aby maksymalizować nie tylko nagrody, ale również entropię polityki, aby wspierać eksplorację przestrzeni stanów. Funkcja ta jest zdefiniowana następująco:
@@ -256,14 +253,10 @@ Schemat algorytmu przedstawiono na Listingu \ref{alg:sac}.
 
 Opis algorytmu sporządzono w oparciu o~artykuły \cite{kumar},\cite{nieznany}.
 
-W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia wartości parametru $\alpha$ związanego z~entropią. Zbadano również działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. Domyślnie wartość ta wynosi 0, ale powszechne jest wykorzystywaniu w~tym miejscu 1000 - 10000 doświadczeń.
-
-W~przypadku obu algorytmów przetestowano różne rozmiary batcha, parametry tempa uczenia sieci neuronowych oraz liczby ich warstw.
-
 \section{Eksperymenty}
 Przeprowadzone testy podzielono na dwie fazy. Pierwsza ma za zadanie określić najlepsze środowisko i zasady uczenia dla agentów. Z kolei druga faza skupia się na dobraniu jak najbardziej optymalnych parametrów w metodach PPO i SAC. W fazie pierwszej agenci byli uczeni do 100000 kroków, a w przypadku fazy drugiej -- do 200000 kroków.
 
-Za ocenę każdego z nauczonych modeli przyjęto dwie miary: $k, u$. Każda z miar mieści się w zakresie $[0,1]$ i ma ocenić skuteczność wyuczonego modelu w różnych warunkach.
+Za ocenę każdego z nauczonych modeli przyjęto dwie miary: $k, u$. Każda z miar mieści się w zakresie $[0,1]$ i ma ocenić skuteczność wyuczonego modelu w różnych warunkach. Obie miary to stosunek średniej liczby przejechanych punktów kontrolnych (po 50 podejściach agenta do wyścigu) do pewnej empirycznie ustalonej wartości. W każdym z podrozdziałów wartość była inna, co dało możliwość znormalizowania wyników i w konsekwencji przejrzystszą ich analizę.
 \begin{itemize}
 	\item Miara $k$ (ang. \textit{known}) - określa, jak dobrze model radzi sobie na torze, na którym przebiegało uczenie.
 	\item Miara $u$ (ang. \textit{unknown}) - określa, jak dobrze model radzi sobie na nowym torze. 
@@ -271,8 +264,7 @@ Za ocenę każdego z nauczonych modeli przyjęto dwie miary: $k, u$. Każda z mi
 
 
 \subsection{Faza pierwsza}
-\subsubsection{Punkty kontrolne}
-\subsubsection{Nagroda za przeżycie}
+\subsubsection{Wypłaty}
 Sprawdzono różne podejścia nagradzania agentów. Trzy zasadnicze podejścia do udzielania wypłat:
 \begin{itemize}
 	\item wypłata za przejechanie punktu kontrolnego,
@@ -280,13 +272,57 @@ Sprawdzono różne podejścia nagradzania agentów. Trzy zasadnicze podejścia d
 	\item wypłata zależna od aktualnej prędkości.
 \end{itemize}
 
+W ramach zachęcenia agentów do przemierzania toru zgodnie z założeniami, na obu torach testowych umieszczono 22 punkty kontrolne. Agent w momencie przejechania przez dany punkt dostaje stałą wypłatę. Wyniki przeprowadzonych testów zostały zaprezentowane w tabeli \ref{tab:wyplaty}.
+
+Analizując wyniki eksperymentu, zauważamy że warto wprowadzać wysokie wypłaty za punkty kontrolne, ponieważ to jednoznacznie poprawia obie miary. W przypadku nagradzania agenta za długość życia nie zauważono znaczącej poprawy w kontekście osiągów na torach testowych.
+
+\begin{table}[H]
+	\centering
+	\smallskip
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Prędkość & Długość życia & Punkty kontrolne & Miara $k$ & Miara $u$ \\
+		\hline
+		0.15 & 0 & 10 & 1 & 0.41 \\
+		0.15 & 0 & 6 & 0.64 & 0.15 \\
+		0.15 & 0 & 2 & 0.68 & 0.18 \\ \hline
+		0 & 0.1 & 10 & 0.47 & 0.14 \\
+		0 & 0.2 & 10 & 0.52 & 0.17 \\
+		0 & 0.3 & 10 & 0.55 & 0.08 \\ \hline
+	\end{tabular}
+	\caption{Testy wypłat}
+	\label{tab:wyplaty}
+\end{table}
+
+
 \subsubsection{Raycasty}
-Postanowiono sprawdzić wpływ liczby obserwacji odległości agenta od najbliższej przeszkody. W każdym z przypadków wysyłano raycasty z dwóch przednich narożników samochodu. Promienie były ustawione do siebie pod takim kątem, by pierwszy z nich celował z frontu samochody, a ostatni był pod kątem $60^{\circ}$. Zbadano cztery możliwości -- wysyłanie odpowiednio 6, 8, 10 i 12 raycastów przez agenta.
+Postanowiono sprawdzić wpływ liczby obserwacji odległości agenta od najbliższej przeszkody. W każdym z przypadków wysyłano raycasty z dwóch przednich narożników samochodu. Promienie były ustawione do siebie pod takim kątem, by pierwszy z nich celował z frontu samochodu, a ostatni był pod kątem $60^{\circ}$. Zgodnie z tabelą \ref{tab:raycast}, zbadano cztery możliwości -- wysyłanie odpowiednio 6, 8, 10 i 12 raycastów przez agenta.
+
+Na podstawie uzyskanych wyników można stwierdzić, że najoptymalniej jest wysyłać 10 promieni. Zmniejszenie ich liczby do 6 i 8 nie wiąże się z istotnym pogorszeniem jakości wynikowych polityk. Jednak zwiększenie liczby promieni do 12 powoduje zauważalny spadek skuteczności agenta zarówno na torze znanym, jak i nowym.
+
+\begin{table}[H]
+	\centering
+	\smallskip
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		Liczba promieni & Miara $k$ & Miara $u$ \\
+		\hline
+		6 & 0.93 & 0.22 \\		
+		8 & 0.92 & 0.33 \\		
+		10 & 1 & 0.42 \\		
+		12 & 0.77 & 0.21 \\\hline
+	\end{tabular}
+	\caption{Testy racyastów}
+	\label{tab:raycast}
+\end{table}
+
 
 \subsection{Faza druga}
 \subsubsection{PPO}
-\subsubsection{SAC}
+W kontekście PPO postanowiono sprawdzić wpływ parametru obcinania $\varepsilon$ oraz liczbę epok uczenia sieci neuronowej.
 
+\subsubsection{SAC}
+Dla metody SAC zbadano działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. ale powszechne jest wykorzystywaniu w~tym miejscu 1000 - 10000 doświadczeń.
 
 \begin{thebibliography}{20}
 	\bibitem[1]{kumar}Kumar V., \textit{Soft Actor-Critic Demystified}, \url{https://towardsdatascience.com/soft-actor-critic-demystified-b8427df61665}. 2019.
