@@ -319,10 +319,70 @@ Na podstawie uzyskanych wyników można stwierdzić, że najoptymalniej jest wys
 
 \subsection{Faza druga}
 \subsubsection{PPO}
-W kontekście PPO postanowiono sprawdzić wpływ parametru obcinania $\varepsilon$ oraz liczbę epok uczenia sieci neuronowej.
+W kontekście PPO postanowiono sprawdzić wpływ parametru obcinania $\varepsilon$ oraz liczbę epok uczenia sieci neuronowej. Wyniki ukazano w tabeli \ref{tab:ppo}.
+
+\begin{table}[H]
+	\centering
+	\smallskip
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		Liczba epok & Parametr obcinania & Miara $k$ & Miara $u$ \\
+		\hline
+		3 & 0.1 & 0.89 & 0.32 \\		
+		3 & 0.2 & 0.88 & 0.33 \\		
+		3 & 0.3 & 1 & 0.37 \\		
+		5 & 0.3 & 0.96 & 0.31 \\
+		10 & 0.3 & 0.93 & 0.34 \\\hline
+	\end{tabular}
+	\caption{Testy PPO}
+	\label{tab:ppo}
+\end{table}
 
 \subsubsection{SAC}
-Dla metody SAC zbadano działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. ale powszechne jest wykorzystywaniu w~tym miejscu 1000 - 10000 doświadczeń.
+W~przypadku algorytmu SAC badano wpływ na wyniki początkowego ustawienia wartości parametru $\alpha$ związanego z~entropią. Zbadano również działanie parametru opisującego liczbę doświadczeń zbieranych do bufora przed aktualizacją polityki. Domyślnie wartość ta wynosi 0, ale powszechne jest wykorzystywaniu w~tym miejscu 1000 - 10000 doświadczeń. Wyniki zostały zaprezentowane w tabel \ref{tab:sac}
+
+\begin{table}[H]
+	\centering
+	\smallskip
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		Wartość $\alpha$ & Liczba doświadczeń & Miara $k$ & Miara $u$ \\
+		\hline
+		0.5 & 0 & 0.89 & 0.11 \\		
+		0.7 & 0 & 1 & 0.22 \\		
+		1 & 0 & 0.82 & 0.19 \\		
+		0.7 & 1000 & 0.66 & 0.12 \\	
+		0.7 & 10000 & 0.54 & 0.21 \\\hline
+	\end{tabular}
+	\caption{Testy SAC}
+	\label{tab:sac}
+\end{table}
+
+\section{Obserwacje}
+\subsection{Entropia}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{entropy}
+	\caption{Entropia}
+	\label{pic:entropy}
+\end{figure}
+
+\subsection{Szybkość ukończenia wyścigu}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{szybkosc}
+	\caption{Szybkość ukończenia wyścigu}
+	\label{pic:szybkosc}
+\end{figure}
+
+\subsection{Długość epizodów}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{episode_length}
+	\caption{Długość epizodów}
+	\label{pic:length}
+\end{figure}
+
 
 \begin{thebibliography}{20}
 	\bibitem[1]{kumar}Kumar V., \textit{Soft Actor-Critic Demystified}, \url{https://towardsdatascience.com/soft-actor-critic-demystified-b8427df61665}. 2019.
